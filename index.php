@@ -1,14 +1,16 @@
 <?php
+include("C:/xampp/htdocs/clubfutbol/bd/conexion.php");
+
 session_start();
 
 if (!isset($_SESSION['user'])){
-header("location: ./vista/login.php");
+header("location: ../clubfutbol/vista/login.php");
 }
 else{
-    
+
     switch($_SESSION['rol']){
         
-        case 1: header("location: ./vista/admin/home.php");
+        case 1: header("location: vista/admin/home.php");
         break;
 
         case 2:header("location: ./vista/empleado/home.php");

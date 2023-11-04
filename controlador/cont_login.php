@@ -1,5 +1,5 @@
 <?php
-include("../bd/conexion.php");
+include("C:/xampp/htdocs/clubfutbol/bd/conexion.php");
 
 $dni = $_POST['dni'];
 $clave = $_POST['clave'];

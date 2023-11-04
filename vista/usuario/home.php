@@ -1,6 +1,5 @@
 <?php
-include("C:/xampp/htdocs/clubfutbol/bd/conexion.php");
-
+include("./bd/conexion.php");
 session_start();
 
 if (!isset($_SESSION['user'])) {
@@ -20,22 +19,6 @@ function consultar_tipous() {
     }
 
     return $tipous;
-};
-function consultar_estado() {
-     global $connect;
-    
-    $sql = "SELECT id_estado, d_dato FROM estado";
-    $result = mysqli_query($connect, $sql);
-    
-    $estados = array();
-    while ($row = mysqli_fetch_assoc($result)) {
-        $estados[] = $row;
-    }
-    
-    mysqli_free_result($result);
-    mysqli_close($connect);
-    
-    return $estados;
 }
 
 
@@ -53,20 +36,20 @@ $resultado = mysqli_query($connect, $sql);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="../admin/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/clubfutbol/css/home.css">
     <link rel="stylesheet" type="text/css" href="/clubfutbol/bootstrap/bootstrap.min.css">
     <script type="text/javascript" src="/clubfutbol/bootstrap/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-
+    
 <?php
-include("/xampp/htdocs/clubfutbol/vista/navbar.php");
+include("../vista/navbar.php")
 ?>
 <section class="section1" id="section1">
-
+<h1>Registro de Usuario </h1>
     <div class="sectionjugador">
-    <h1>Registro de Usuario </h1>
-    <form action="../../controlador/cont_register.php" method="POST" id="form_registro">
+      
+    <form action="../controlador/cont_register.php" method="POST" id="form_registro">
             <label for="nombreyapellido">Nombre</label>
             <input type="text" id="nombreyapellido" name="nombreyapellido" required>
             <label for="dni">D.N.I</label>
@@ -77,39 +60,31 @@ include("/xampp/htdocs/clubfutbol/vista/navbar.php");
             <input type="password" id="clave" name="clave" required>
             <br></br>
 
-         
+
             <div class="tipous">
-    <label for="id_tipo_us">Tipo de Usuario</label>
-    <select name="id_tipo_us" id="id_tipo_us">
-        <?php
-        $tipous = consultar_tipous();
-        foreach ($tipous as $tipouss) {
-            echo "<option value='{$tipouss['id_tipous']}'>{$tipouss['descripcion']}</option>";
-        }
-        ?>
-    </select>
+            <label for="tipous">Tipo de Usuario</label>
+            <select name="tipous" id="tipous">
+            
+                <?php
+                $tipous = consultar_tipous();
+                foreach ($tipous as $tipouss) {
+                    echo "<option value='{$tipouss['id_tipous']}'>{$tipouss['descripcion']}</option>";
+                }
+                ?>
+             </select>
 
-    <label for="id_estado">Estado</label>
-    <select id="id_estado" name="id_estado" required>
-        <?php
-        $estados = consultar_estado();
-        foreach ($estados as $estado) {
-            echo "<option value='{$estado['id_estado']}'>{$estado['d_dato']}</option>";
-        }
-        ?>
-    </select>
-
-    <div class="btn-register" id="registro" name="registro">
-        <button type="submit">Registrar Usuario</button>
-    </div>
-</div>
-
+             <div class="btn-register" id="registro" name="registro">
+                <button type="submit">Registrar Usuario</button>
+            </div>
+             </div>
             </div>
             <br>
           
         </form>
     </div>
-    <div class="sectiontabla">
+</section>
+
+<div class="sectiontabla">
         <h2>Usuarios</h2>
         <table class="table table-bordered border-primary">
             <thead>
@@ -134,12 +109,6 @@ include("/xampp/htdocs/clubfutbol/vista/navbar.php");
             </tbody>
         </table>
     </div>
-
-
-
-
-</section>
-
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>

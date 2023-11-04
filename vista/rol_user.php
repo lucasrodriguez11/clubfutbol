@@ -1,8 +1,10 @@
 <?php
+include("C:/xampp/htdocs/clubfutbol/bd/conexion.php");
+
 session_start();
 
 if (!isset($_SESSION['user'])){
-header("location: ../index.php");
+header("location: ../clubfutbol/index.php");
 }
 ?>
 
