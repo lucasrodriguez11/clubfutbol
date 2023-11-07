@@ -19,8 +19,8 @@ if (mysqli_num_rows($r) > 0) {
     echo '
         <script>
         alert("Los datos que intenta ingresar ya se encuentran registrados.");
+        location.href = "../vista/admin/home.php";
         </script>';
-        exit();
 }
 
 

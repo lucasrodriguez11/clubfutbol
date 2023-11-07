@@ -23,9 +23,7 @@ include("C:/xampp/htdocs/clubfutbol/bd/conexion.php");
 </div>
 
 
-
 <?php
-
 $solapa = basename($_SERVER['PHP_SELF']);
 ?>
 

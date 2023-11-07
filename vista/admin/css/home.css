@@ -349,3 +349,29 @@ h1 {
 .sectionjugador button:hover {
   background-color: #45a049; /* Cambia el color de fondo al pasar sobre el botón */
 }
+
+.section2 {
+  display: flex;
+  align-items: left;
+
+}
+
+
+.sectionjugadoralta form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.sectionjugadoralta form label,
+.sectionjugadoralta form input,
+.sectionjugadoralta form select {
+  display: flex;
+  align-items: center;
+  width: calc(50% - 10px);
+  margin-bottom: 15px;
+}
+
+.sectionjugadoralta form input[type="submit"] {
+  width: 100%;
+}
