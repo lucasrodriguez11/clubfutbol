@@ -27,9 +27,7 @@
                 </div>
 
                 <button>Identificarme</button>
-                <div class="register">
-                    <p>Nuevo en el club? <a href="../vista/register.php">Registrate!</a></p>
-                </div>
+            
                 </form>
             </div>
         </div>

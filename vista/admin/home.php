@@ -76,7 +76,6 @@ include("/xampp/htdocs/clubfutbol/vista/navbar.php");
             <label for="clave">Contraseña</label>
             <input type="password" id="clave" name="clave" required>
             <br></br>
-
          
             <div class="tipous">
     <label for="id_tipo_us">Tipo de Usuario</label>
@@ -88,7 +87,7 @@ include("/xampp/htdocs/clubfutbol/vista/navbar.php");
         }
         ?>
     </select>
-
+    
     <label for="id_estado">Estado</label>
     <select id="id_estado" name="id_estado" required>
         <?php
@@ -98,7 +97,7 @@ include("/xampp/htdocs/clubfutbol/vista/navbar.php");
         }
         ?>
     </select>
-
+    
     <div class="btn-register" id="registro" name="registro">
         <button type="submit">Registrar Usuario</button>
     </div>

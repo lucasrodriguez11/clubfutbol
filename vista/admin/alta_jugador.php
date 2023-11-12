@@ -7,7 +7,7 @@ function consultar_posicion() {
     
     include("../../bd/conexion.php");
     
-    $sql = "SELECT id_posicion, nombre_posicion FROM posicion";
+    $sql = "SELECT id_posicion, nombre_posicion FROM posicion  ";
     $result = mysqli_query($connect, $sql);
     
     $posiciones = array();
@@ -38,6 +38,23 @@ function consultar_usuario() {
     return $usuario;
 }
 
+function consultar_estado_jugador() {
+    include("../../bd/conexion.php");
+    
+    $sql = "SELECT id_estado_jug, d_dato FROM estado_jugador";
+    $result = mysqli_query($connect, $sql);
+    
+    $estadojugador = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        $estadojugador[] = $row;
+    }
+    
+    mysqli_free_result($result);
+    mysqli_close($connect);
+    
+    return $estadojugador;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -57,21 +74,41 @@ function consultar_usuario() {
 include("../navbar.php");
 ?>
 
-
 <div class="section2">
 <div class="sectionjugadoralta">
   
      <form action="../../controlador/cont_altajugador.php" method="POST">
 
      <h1>Alta Jugador</h1>
+
+    <label for="id_username_fk">Usuario</label>
+    <select name="id_username_fk" id="id_username_fk">
+    <?php
+      $usuario = consultar_usuario();
+        foreach ($usuario as $usuarios) {
+            echo "<option value='{$usuarios['id_usuario']}'>{$usuarios['dni']}</option>";
+        }
+        ?>
+    </select>
+
     <label for="nombrej">Nombre Jugador</label>
     <input type="text" name="nombrej" id="nombrej">
+
+    <label for="id_estado_fk">Estado</label>
+    <select name="id_estado_fk" id="id_estado_fk">
+    <?php
+      $estadojugador = consultar_estado_jugador();
+        foreach ($estadojugador as $estadojugador) {
+            echo "<option value='{$estadojugador['id_estado_jug']}'>{$estadojugador['d_dato']}</option>";
+        }
+        ?>
+    </select>
   
     <label for="fecha_nacimiento">Fecha de Nacimiento</label>
     <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
 
-    <label for="nombre_posicion">Posicion</label>
-    <select name="nombre_posicion" id="nombre_posicion">
+    <label for="id_posicion_fk">Posicion</label>
+    <select name="id_posicion_fk" id="id_posicion_fk">
         <?php
         $posiciones = consultar_posicion();
         foreach ($posiciones as $posicion) {
@@ -103,18 +140,8 @@ include("../navbar.php");
         <option value="ambas">Ambas</option>
     </select>
 
-    <label for="usuario">Usuario</label>
-    <select name="usuario" id="usuario">
-    <?php
-      $usuario = consultar_usuario();
-        foreach ($usuario as $usuarios) {
-            echo "<option value='{$usuarios['id_usuario']}'>{$usuarios['dni']}</option>";
-        }
-        ?>
-    </select>
-
     <label for="nro_dorsal">Numero Camiseta</label>
-    <<input type="number" id="nro_dorsal" name="nro_dorsal" required>
+    <input type="number" id="nro_dorsal" name="nro_dorsal" required>
 
     <div class="btn-jugador" id="btn-jugador" name="btn-jugador">
         <button type="submit">Agregar Jugador</button>
@@ -124,64 +151,54 @@ include("../navbar.php");
 </div>
 </div>
 
-<div class="sectiontabla2">
-    <?php
-if (isset($jugador)) {
-    echo "<h2>Datos del Jugador</h2>";
-    echo "<table border='1'>
+<div class="table table-bordered border-primary">
+    <h2>PLANTILLA DE JUGADORES</h2>
+    <table>
+        <thead>
             <tr>
-                <th>Nombre Jugador</th>
-                <th>Fecha de Nacimiento</th>
-                <th>Posición</th>
-                <th>Posición Alternativa</th>
-                <th>Pierna Hábil</th>
-                <th>Mano Hábil</th>
-                <th>Usuario</th>
-                <th>Número Camiseta</th>
+                <td>USUARIO</td>
+                <td>NOMBRE JUGADOR</td>
+                <td>ESTADO</td>
+                <td>CATEGORIA</td>
+                <td>POSICION</td>
+                <td>NUMERO CAMISETA</td>
+                <td></td>
+                <td></td>
             </tr>
-            <tr>
-                <td>{$jugador['nombrej']}</td>
-                <td>{$jugador['fechaNacimiento']}</td>
-                <td>{$jugador['nombrePosicion']}</td>
-                <td>{$jugador['posicionAlt']}</td>
-                <td>{$jugador['piernaHabil']}</td>
-                <td>{$jugador['manoHabil']}</td>
-                <td>{$jugador['usuario']}</td>
-                <td>{$jugador['nroDorsal']}</td>
-            </tr>
-          </table>";
-}
-?>
-    </div>
-
-    <?php
-    // cont_altajugador.php
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombrej = $_POST["nombrej"];
-    $fechaNacimiento = $_POST["fecha_nacimiento"];
-    $nombrePosicion = $_POST["nombre_posicion"];
-    $posicionAlt = $_POST["posicion_alt"];
-    $piernaHabil = $_POST["pierna_habil"];
-    $manoHabil = $_POST["mano_habil"];
-    $usuario = $_POST["usuario"];
-    $nroDorsal = $_POST["nro_dorsal"];
-
-    // Procesa los datos como desees, como guardarlos en una base de datos.
-    // Ejemplo de cómo guardarlos en un array:
-    $jugador = [
-        "nombrej" => $nombrej,
-        "fechaNacimiento" => $fechaNacimiento,
-        "nombrePosicion" => $nombrePosicion,
-        "posicionAlt" => $posicionAlt,
-        "piernaHabil" => $piernaHabil,
-        "manoHabil" => $manoHabil,
-        "usuario" => $usuario,
-        "nroDorsal" => $nroDorsal,
-    ];
-}
-?>
-
+        </thead>
+        <tbody>
+            
+            <?php
+            $sql = "SELECT jugadores.id_jugador, usuarios.dni, jugadores.nombre, estado_jugador.d_dato , jugadores.fecha_nacimiento, posicion.nombre_posicion, jugadores.nro_dorsal
+                    FROM jugadores
+                    INNER JOIN usuarios ON jugadores.id_username_fk = usuarios.id_usuario
+                    INNER JOIN estado_jugador ON jugadores.id_estado_fk = estado_jugador.id_estado_jug
+                    INNER JOIN posicion ON jugadores.id_posicion_fk = posicion.id_posicion";
+            $result = mysqli_query($connect, $sql);
+            
+            while ($row = mysqli_fetch_assoc($result)): ?>
+                <tr>
+                <td><?= $row['dni'] ?></td>
+                <td><?= $row['nombre'] ?></td>
+                <td><?= $row['d_dato'] ?></td>
+                <td><?= $row['fecha_nacimiento'] ?></td>
+                <td><?= $row['nombre_posicion'] ?></td> 
+                <td><?= $row['nro_dorsal'] ?></td>
+                <td> 
+                <a href="detalle_jugador.php?id_jugador=<?= $row['id_jugador'] ?>" class="users-table--edit">Ver detalle</a>
+                </td>
+                </tr>
+                <?php endwhile;
+            
+                mysqli_free_result($result);
+                mysqli_close($connect);
+                ?>
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script type="text/javascript" src="../js/funciones.js"></script>
 
 </body>
 </html>
